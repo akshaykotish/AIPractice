@@ -4,12 +4,19 @@ using namespace std;
 
 class AI {
 public:
+	char AIChar = 'X';
+	char PlChar = 'O';
 
+	int turn = -1;
+
+	int reqMoves[9];
 	int board[9] = {
-		1,  0, -1,
-	   -1,  1, -1,
-	   -1, -1, 0
+		-1, 0, -1,
+	     1, 1, 0,
+	     0, -1, 0
 	};
+
+	int nextMove = 0;
 
 	int Check(int temp[], int turn) {
 		for (int i = 0; i < 9; i+=3)
@@ -99,6 +106,12 @@ public:
 
 					if (depth == 1) {
 						cout << depth << " " << i << " " << p << " " << value << endl;
+						//reqMoves[i] = value;
+
+						if (p == 1)
+						{
+							nextMove = i;
+						}
 					}
 				}
 				
@@ -108,10 +121,75 @@ public:
 		return 0;
 	}
 
+	void WhatsNext() {
+		for (int i = 0; i < 9; i++)
+		{
+
+		}
+	}
+
+	void Display(int tboard[])
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			if(tboard[i] == 1){
+				cout << AIChar;
+			}
+			else if(tboard[i] == -1) {
+				cout << "O";
+			}
+			else {
+				cout << " ";
+			}
+			
+			if ((i + 1) % 3 == 0)
+			{
+				cout << endl;
+			}
+			else {
+				cout << " | ";
+			}
+		}
+		cout << endl;
+	}
+
+	void GamePlay()
+	{
+		int i = 0;
+		while (Check(board, 1) != 1 && Check(board, -1) != -1 && i < 9)
+		{
+			system("CLS");
+			if (turn == -1)
+			{
+				int a;
+				cout <<"Turn: " << PlChar << endl;
+				Display(board);
+				cin >> a;
+				board[a] = -1;
+				turn = 1;
+			}
+			else {
+				int a;
+				cout << "Turn: " << AIChar << endl;
+				Display(board);
+				Process(board, 1, 1);
+				board[nextMove] = 1;
+				turn = -1;
+			}
+			i++;
+		}
+		system("CLS");
+		Display(board);
+	}
 
 	void Play()
 	{
+		/*Display(board);
 		cout<<Process(board, 1, 1);
+		cout << "NextMove: " << nextMove << endl;
+		board[nextMove] = 1;
+		Display(board);*/
+		GamePlay();
 	}
 };
 
